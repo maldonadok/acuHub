@@ -1,0 +1,144 @@
+/*maldonadok
+* Date: February 26, 2020
+*/
+
+#include <iostream>
+using namespace std;
+const int CAPACITY = 100;
+
+int length(char *arr){
+    int length = 0, i=0;
+    while (int (arr[i]) != 0){
+        length++;
+        i++;
+    }
+    return length;
+}
+
+void insert(char *arr, char character, int pos){
+    arr[pos] = character;
+    cout << "Your string is now: " << arr << endl;
+}
+
+//This function removes the first instance of a character of the array.
+void remove(char *arr, char character, int pos) {
+    for (int i = 0; i < length(arr); i++) {
+        if (arr[i] == character && arr[i] == arr[pos]) {
+            for (int j = pos; j <= length(arr); j++){
+                arr[j] = arr[j+1];
+            }
+        }
+    }
+    cout << "Your string is now: " << arr << "\n";
+}
+
+//Intended to display the current array.
+void print(char *arr){
+    cout << "Your current string is: " << arr << endl;
+    int alphaCounter = 0, numCounter = 0, specCounter = 0;
+    for(int i = 0; i < length(arr); i++){
+        if ((int(arr[i]) >= 48) && (int(arr[i]) <= 57)) {
+            numCounter++;
+        }else if ((int(arr[i]) >= 65 && int(arr[i]) <= 90)
+                || (int(arr[i]) >= 97 && int(arr[i]) <= 122)){
+            alphaCounter++;
+
+        }else{
+            specCounter++;
+        }
+    }
+    cout << "The length of the string is: " << length(arr) << endl;
+    cout << "# of letters: " << alphaCounter << endl;
+    cout << "# of numeric values: " << numCounter << endl;
+    cout << "# of special characters: " << specCounter << endl;
+}
+
+//This function takes each value at index i and rearranges it in the array.
+void sort(char *arr){
+    for (int i = 0; i < length(arr); i++){
+        char x = arr[i];
+        int j = i-1;
+        while (j >= 0 && arr[j] > x){
+            arr[j+1] = arr[j];
+            j = j-1;
+        }
+        arr[j+1] = x;
+    }
+    cout << "Your sorted string is: " << arr << endl;
+}
+
+//Leaves only the numbers and alphabet characters.
+void normalize(char *arr){
+    for(int i = 0; i < CAPACITY; i++){
+        if ((int(arr[i]) >= 65 && int(arr[i]) <= 90) &&
+            (int(arr[i]) >= 97 && int(arr[i]) <= 122) &&
+            ((int(arr[i]) >= 48 && int(arr[i]) <= 57))){
+            arr[i] = arr[i];
+        }
+        else{
+            arr[i] = arr[i+1];
+        }
+    }
+    cout << "The array is normalized." << endl;
+}
+
+void menu(){
+    cout << "1. Insert an element" << endl;
+    cout << "2. Remove an element" << endl;
+    cout << "3. Print the array" << endl;
+    cout << "4. Sort the array" << endl;
+    cout << "5. Normalize the array" << endl;
+    cout << "6. Exit \n" << endl;
+}
+
+int main() {
+    int option = 0, pos;
+    char arr[CAPACITY], character;
+    cout << "Enter the string. (Max: 100): " << endl;
+    cin >> arr;
+    menu();
+    while(option != 6 && option <= 6){
+        switch (option){ //Switch case seemed the most appropriate with 6 options.
+            case 1:
+                cout << "Enter a position: " << endl;
+                cin >> pos;
+                cout << "Enter a character to insert: " << endl;
+                cin >> character;
+                insert(arr, character, pos);
+                cout << "\n";
+                menu();
+                break;
+            case 2:
+                cout << "Enter a character to remove: " << endl;
+                cin >> character;
+                cout << "Enter a position: " << endl;
+                cin >> pos;
+                remove(arr, character, pos);
+                cout << "\n";
+                menu();
+                break;
+            case 3:
+                print(arr);
+                cout << "\n";
+                menu();
+                break;
+            case 4:
+                sort(arr);
+                cout << "\n";
+                menu();
+                break;
+            case 5:
+                normalize(arr);
+                cout << "\n";
+                menu();
+                break;
+            case 6:
+                return 0;
+            default:
+                option = 0;
+        }
+        cout << "Enter your option: " << endl;
+        cin >> option;
+    }
+    return 0;
+}
